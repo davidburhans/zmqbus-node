@@ -10,6 +10,8 @@ base_options =
 	multicast_port: 45555
 	pgm_addr: '239.1.2.4'
 	pgm_port: 45555
+	sub_binding: 'tcp://0.0.0.0:*'
+	pub_binding: 'tcp://0.0.0.0:*'
 
 exports.getOptions = (options = {}) ->
 	throw new Error 'options must be an object' if typeof options isnt 'object'

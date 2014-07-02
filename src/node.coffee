@@ -6,11 +6,11 @@ election = require './election'
 common = require './common'
 
 class Forwarder
-	constructor: () ->
+	constructor: (options) ->
 		@sub = zmq.socket 'sub'
 		@pub = zmq.socket 'pub'
-		@sub.bindSync "tcp://0.0.0.0:*"
-		@pub.bindSync "tcp://0.0.0.0:*"
+		@sub.bindSync options.sub_binding
+		@pub.bindSync options.pub_binding
 
 		@sub_addr = common.get_local_endpoint @sub
 		@pub_addr = common.get_local_endpoint @pub
@@ -22,7 +22,7 @@ class Forwarder
 class ElectedNode extends EventEmitter
 	constructor: (@options = {}) ->
 		# creates a forwarder device and advertises the connection metadata
-		@fwd = new Forwarder()
+		@fwd = new Forwarder(@options)
 		@metadata = {sub_addr: @fwd.sub_addr, pub_addr: @fwd.pub_addr}
 
 		@ready = false
